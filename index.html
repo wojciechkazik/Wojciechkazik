@@ -89,6 +89,7 @@ button:hover {
             <input type="number" id="building-area" placeholder="Podaj powierzchnię budynku w m²">
         </div>
         <div class="form-group">
+            
             <label for="paved-area">Powierzchnia bruków (m²)</label>
             <input type="number" id="paved-area" placeholder="Podaj powierzchnię powierzchni utwardzonych (bruków) w m²">
         </div>
@@ -189,6 +190,42 @@ button:hover {
                 <option value="60000">Premium (60 tys. zł)</option>
             </select>
         </div>
+        <div class="form-group">
+            <label for="jacuzzi-type">Jacuzzi</label>
+            <select id="jacuzzi-type">
+                <option value="0">Brak</option>
+                <option value="5000">Dmuchane (5 tys. zł)</option>
+                <option value="20000">Małe (20 tys. zł)</option>
+                <option value="35000">Średnie (35 tys. zł)</option>
+                <option value="50000">Duże (50 tys. zł)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="storage-house">Domek gospodarczy</label>
+            <select id="storage-house">
+                <option value="0">Brak</option>
+                <option value="1500">Budżetowy (1,5 tys. zł)</option>
+                <option value="4000">Minimum (4 tys. zł)</option>
+                <option value="10000">Medium (10 tys. zł)</option>
+                <option value="20000">Maximum (20 tys. zł)</option>
+                <option value="30000">Premium (30 tys. zł)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="fireplace-zone">Strefa paleniska</label>
+            <select id="fireplace-zone">
+                <option value="0">Brak</option>
+                <option value="1000">Minimum (1 tys. zł)</option>
+                <option value="7000">Medium (7 tys. zł)</option>
+                <option value="12000">Średnia (12 tys. zł)</option>
+                <option value="20000">Maxi (20 tys. zł)</option>
+                <option value="35000">Premium (35 tys. zł)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="mower-check">Kosiarka automatyczna</label>
+            <input type="checkbox" id="mower-check" onclick="toggleMowerCost()"> Włącz koszty kosiarki automatycznej
+        </div>
 
         <!-- Oblicz -->
         <button type="button" onclick="calculate()">Oblicz</button>
@@ -198,6 +235,12 @@ button:hover {
     <div id="results" class="results"></div>
 
     <script>
+        let includeMower = false;
+
+        function toggleMowerCost() {
+            includeMower = document.getElementById('mower-check').checked;
+        }
+
         function calculate() {
     const plotArea = parseFloat(document.getElementById('plot-area').value) || 0;
     const buildingArea = parseFloat(document.getElementById('building-area').value) || 0;
@@ -213,6 +256,9 @@ button:hover {
     const saunaCost = parseFloat(document.getElementById('sauna-type').value) || 0;
     const pergolaCost = parseFloat(document.getElementById('pergola-type').value) || 0;
     const kitchenCost = parseFloat(document.getElementById('garden-kitchen').value) || 0;
+    const jacuzziCost = parseFloat(document.getElementById('jacuzzi-type').value) || 0;
+    const storageHouseCost = parseFloat(document.getElementById('storage-house').value) || 0;
+    const fireplaceZoneCost = parseFloat(document.getElementById('fireplace-zone').value) || 0;
 
     const greenArea = plotArea - (buildingArea + pavedArea + terraceArea);
     if (greenArea < 0) {
@@ -225,6 +271,26 @@ button:hover {
     const lawnArea = (greenArea * lawnRatio) / 100;
     const bedsArea = (greenArea * bedsRatio) / 100;
 
+    let mowerCost = 0;
+    if (includeMower) {
+        const mowerCostOptions = [
+            { limit: 500, cost: 5000 },
+            { limit: 1000, cost: 8000 },
+            { limit: 1500, cost: 12000 },
+            { limit: 2000, cost: 15000 },
+            { limit: 3000, cost: 20000 },
+            { limit: 5000, cost: 25000 },
+            { limit: 100000, cost: 35000 }
+        ];
+
+        for (let option of mowerCostOptions) {
+            if (lawnArea <= option.limit) {
+                mowerCost = option.cost;
+                break;
+            }
+        }
+    }
+
     const projectCost = plotArea * 10;
     const preparationCost = greenArea * 15;
     const irrigationCost = greenArea * 42.5;
@@ -234,34 +300,39 @@ button:hover {
     const pavingCost = pavedArea * pavingTypeCost;
     const terraceCost = terraceArea * terraceMaterialCost;
 
-    const totalExtraCost = poolCost + saunaCost + pergolaCost + kitchenCost;
+    const totalExtraCost = poolCost + saunaCost + pergolaCost + kitchenCost + jacuzziCost + storageHouseCost + fireplaceZoneCost + mowerCost;
     const totalCost = projectCost + preparationCost + irrigationCost + lightingCost + lawnCost + bedsCost + pavingCost + terraceCost + totalExtraCost;
 
-document.getElementById('results').innerHTML = `
-    <h3>Wyniki:</h3>
-    <p><strong>Powierzchnia zielona:</strong> ${plotArea} - (${buildingArea} + ${pavedArea} + ${terraceArea}) = ${greenArea.toFixed(2)} m²</p>
-    <ul>
-        <li><strong>Powierzchnia trawnika:</strong> ${greenArea} * (${lawnRatio}%) = ${lawnArea.toFixed(2)} m²</li>
-        <li><strong>Powierzchnia rabat:</strong> ${greenArea} * (${bedsRatio}%) = ${bedsArea.toFixed(2)} m²</li>
-    </ul>
-    <h4>Koszty:</h4>
-    <ul>
-        <li>Przygotowanie terenu: ${greenArea.toFixed(2)} * 15 zł = ${preparationCost.toFixed(2)} zł</li>
-        <li>Zakładanie nawadniania: ${greenArea.toFixed(2)} * 42.5 zł = ${irrigationCost.toFixed(2)} zł</li>
-        <li>Oświetlenie ogrodu: ${plotArea} * 15 zł = ${lightingCost.toFixed(2)} zł</li>
-        <li>Zakładanie trawnika: ${lawnArea.toFixed(2)} * ${lawnTypeCost} zł = ${lawnCost.toFixed(2)} zł</li>
-        <li>Wykonanie rabat: ${bedsArea.toFixed(2)} * ${plantsStandardCost} zł = ${bedsCost.toFixed(2)} zł</li>
-        <li>Kostka brukowa: ${pavedArea} * ${pavingTypeCost} zł = ${pavingCost.toFixed(2)} zł</li>
-        <li>Materiał na taras: ${terraceArea} * ${terraceMaterialCost} zł = ${terraceCost.toFixed(2)} zł</li>
-        <li>Basen: ${poolCost.toFixed(2)} zł</li>
-        <li>Sauna: ${saunaCost.toFixed(2)} zł</li>
-        <li>Pergola: ${pergolaCost.toFixed(2)} zł</li>
-        <li>Kuchnia ogrodowa: ${kitchenCost.toFixed(2)} zł</li>
-    </ul>
-    <h4>Łączna kwota: ${totalCost.toFixed(2)} zł</h4>
-    <p><a href="https://wytwornia-zieleni.pl/formularz-wyceny/polski" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">Sprawdź cenę projektu w Wytwórni Zieleni</a></p>
-`;
+    document.getElementById('results').innerHTML = `
+        <h3>Wyniki:</h3>
+        <p><strong>Powierzchnia zielona:</strong> ${plotArea} - (${buildingArea} + ${pavedArea} + ${terraceArea}) = ${greenArea.toFixed(2)} m²</p>
+        <ul>
+            <li><strong>Powierzchnia trawnika:</strong> ${greenArea} * (${lawnRatio}%) = ${lawnArea.toFixed(2)} m²</li>
+            <li><strong>Powierzchnia rabat:</strong> ${greenArea} * (${bedsRatio}%) = ${bedsArea.toFixed(2)} m²</li>
+        </ul>
+        <h4>Koszty:</h4>
+        <ul>
+            <li>Przygotowanie terenu: ${greenArea.toFixed(2)} * 15 zł = ${preparationCost.toFixed(2)} zł</li>
+            <li>Zakładanie nawadniania: ${greenArea.toFixed(2)} * 42.5 zł = ${irrigationCost.toFixed(2)} zł</li>
+            <li>Oświetlenie ogrodu: ${plotArea} * 15 zł = ${lightingCost.toFixed(2)} zł</li>
+            <li>Zakładanie trawnika: ${lawnArea.toFixed(2)} * ${lawnTypeCost} zł = ${lawnCost.toFixed(2)} zł</li>
+            <li>Wykonanie rabat: ${bedsArea.toFixed(2)} * ${plantsStandardCost} zł = ${bedsCost.toFixed(2)} zł</li>
+            <li>Kostka brukowa: ${pavedArea} * ${pavingTypeCost} zł = ${pavingCost.toFixed(2)} zł</li>
+            <li>Materiaal na taras: ${terraceArea} * ${terraceMaterialCost} zł = ${terraceCost.toFixed(2)} zł</li>
+            <li>Basen: ${poolCost.toFixed(2)} zł</li>
+            <li>Sauna: ${saunaCost.toFixed(2)} zł</li>
+            <li>Pergola: ${pergolaCost.toFixed(2)} zł</li>
+            <li>Kuchnia ogrodowa: ${kitchenCost.toFixed(2)} zł</li>
+            <li>Jacuzzi: ${jacuzziCost.toFixed(2)} zł</li>
+            <li>Domek gospodarczy: ${storageHouseCost.toFixed(2)} zł</li>
+            <li>Strefa paleniska: ${fireplaceZoneCost.toFixed(2)} zł</li>
+            <li>Kosiarka automatyczna: ${mowerCost.toFixed(2)} zł</li>
+        </ul>
+        <h4>Łączna kwota: ${totalCost.toFixed(2)} zł</h4>
+        <p><a href="https://wytwornia-zieleni.pl/formularz-wyceny/polski" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">Sprawdź cenę projektu w Wytwórni Zieleni</a></p>
+    `;
 }
     </script>
 </body>
 </html>
+

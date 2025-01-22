@@ -133,14 +133,13 @@ button:hover {
                 <option value="1600">Deska tarasowa egzotyczna 600 zł/m2 (koszt całkowity 1600 zł/m²)</option>
             </select>
         </div>
-        <div class="form-group">
-            <label for="lawn-type">Założenie Trawnika (koszt materiał i robocizna)</label>
-            <select id="lawn-type">
-                <option value="0">Brak</option>
-                <option value="25">Siany (25 zł/m²)</option>
-                <option value="45">Z rolki (45 zł/m²)</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label for="lawn-type">Założenie Trawnika</label>
+                <select id="lawn-type">
+                    <option value="seeding">Trawnik z siewu</option>
+                    <option value="rolling">Trawnik z rolki</option>
+                </select>
+            </div>
         <div class="form-group">
             <label for="plants-standard">Rośliny na rabatach (koszt materiał i robocizna)</label>
             <select id="plants-standard">
@@ -249,149 +248,148 @@ button:hover {
     <!-- Wyniki -->
     <div id="results" class="results"></div>
 
-    <script>
-    let includeMower = false;
-
-    function toggleMowerCost() {
-        includeMower = document.getElementById('mower-check').checked;
-    }
-
-    // Funkcje do obliczania dynamicznych kosztów jednostkowych
-    function getIrrigationCostPerSqm(area) {
-        if (area <= 200) return 44;
-        if (area <= 400) return 32;
-        if (area <= 800) return 25;
-        if (area <= 1500) return 21;
-        if (area <= 2000) return 19;
-        if (area <= 3000) return 14;
-        if (area <= 4000) return 13;
-        if (area <= 6000) return 12;
-        if (area <= 8000) return 11;
-        return 9; // Opcjonalny koszt powyżej 8000 m²
-    }
-
-    function getPreparationCostPerSqm(area) {
-        if (area <= 200) return 30;
-        if (area <= 400) return 28;
-        if (area <= 800) return 25;
-        if (area <= 1500) return 22;
-        if (area <= 2000) return 19;
-        if (area <= 3000) return 13;
-        if (area <= 4000) return 11;
-        if (area <= 6000) return 10;
-        if (area <= 8000) return 8;
-        return 6; // Opcjonalny koszt powyżej 8000 m²
-    }
-
-    function getLightingCostPerSqm(area) {
-        if (area <= 200) return 25;
-        if (area <= 400) return 18;
-        if (area <= 800) return 15;
-        if (area <= 1500) return 13;
-        if (area <= 2000) return 12;
-        if (area <= 3000) return 11;
-        if (area <= 4000) return 10;
-        if (area <= 6000) return 9;
-        if (area <= 8000) return 8;
-        return 7; // Opcjonalny koszt powyżej 8000 m²
-    }
-
-    function calculate() {
-        const plotArea = parseFloat(document.getElementById('plot-area').value) || 0;
-        const buildingArea = parseFloat(document.getElementById('building-area').value) || 0;
-        const pavedArea = parseFloat(document.getElementById('paved-area').value) || 0;
-        const terraceArea = parseFloat(document.getElementById('terrace-area').value) || 0;
-
-        const pavingTypeCost = parseFloat(document.getElementById('paving-type').value) || 0;
-        const terraceMaterialCost = parseFloat(document.getElementById('terrace-material').value) || 0;
-        const lawnTypeCost = parseFloat(document.getElementById('lawn-type').value) || 0;
-        const plantsStandardCost = parseFloat(document.getElementById('plants-standard').value) || 0;
-
-        const poolCost = parseFloat(document.getElementById('pool-type').value) || 0;
-        const saunaCost = parseFloat(document.getElementById('sauna-type').value) || 0;
-        const pergolaCost = parseFloat(document.getElementById('pergola-type').value) || 0;
-        const kitchenCost = parseFloat(document.getElementById('garden-kitchen').value) || 0;
-        const jacuzziCost = parseFloat(document.getElementById('jacuzzi-type').value) || 0;
-        const storageHouseCost = parseFloat(document.getElementById('storage-house').value) || 0;
-        const fireplaceZoneCost = parseFloat(document.getElementById('fireplace-zone').value) || 0;
-
-        const greenArea = plotArea - (buildingArea + pavedArea + terraceArea);
-        if (greenArea < 0) {
-            document.getElementById('results').innerHTML = `<strong>Błąd:</strong> Powierzchnia zielona nie może być ujemna!`;
-            return;
+        <script>
+        let includeMower = false;
+    
+        function toggleMowerCost() {
+            includeMower = document.getElementById('mower-check').checked;
         }
-
-        const lawnBedsRatio = document.getElementById('lawn-beds-ratio').value;
-        const [lawnRatio, bedsRatio] = lawnBedsRatio.split('/').map(Number);
-        const lawnArea = (greenArea * lawnRatio) / 100;
-        const bedsArea = (greenArea * bedsRatio) / 100;
-
-        let mowerCost = 0;
-        if (includeMower) {
-            const mowerCostOptions = [
-                { limit: 500, cost: 5000 },
-                { limit: 1000, cost: 8000 },
-                { limit: 1500, cost: 12000 },
-                { limit: 2000, cost: 15000 },
-                { limit: 3000, cost: 20000 },
-                { limit: 5000, cost: 25000 },
-                { limit: 100000, cost: 35000 }
-            ];
-
-            for (let option of mowerCostOptions) {
-                if (lawnArea <= option.limit) {
-                    mowerCost = option.cost;
-                    break;
-                }
+    
+        // Funkcja dynamicznej ceny trawnika
+        function getLawnCostPerSqm(area, lawnType) {
+            let baseCost;
+            if (area <= 500) baseCost = 30; // Cena wyższa dla mniejszych działek
+        else if (area <= 1000) baseCost = 17;
+        else if (area <= 2000) baseCost = 15;
+        else if (area <= 3000) baseCost = 12;
+        else if (area <= 4000) baseCost = 10;
+        else if (area <= 5000) baseCost = 9;
+        else if (area <= 6000) baseCost = 8;
+        else if (area <= 7000) baseCost = 7;
+        else if (area <= 8000) baseCost = 6;
+        else if (area <= 9000) baseCost = 5;
+        else baseCost = 5; // Cena niższa dla większych działek
+    
+            // Cena dwukrotnie wyższa dla trawnika z rolki
+            return lawnType === "rolling" ? baseCost * 2 : baseCost;
+        }
+    
+        // Funkcje dynamiczne dla innych elementów (pozostają bez zmian)
+        function getIrrigationCostPerSqm(area) {
+            if (area <= 200) return 44;
+            if (area <= 400) return 32;
+            if (area <= 800) return 25;
+            if (area <= 1500) return 21;
+            if (area <= 2000) return 19;
+            if (area <= 3000) return 14;
+            if (area <= 4000) return 13;
+            if (area <= 6000) return 12;
+            if (area <= 8000) return 11;
+            return 9;
+        }
+    
+        function getPreparationCostPerSqm(area) {
+            if (area <= 200) return 30;
+            if (area <= 400) return 28;
+            if (area <= 800) return 25;
+            if (area <= 1500) return 22;
+            if (area <= 2000) return 19;
+            if (area <= 3000) return 13;
+            if (area <= 4000) return 11;
+            if (area <= 6000) return 10;
+            if (area <= 8000) return 8;
+            return 6;
+        }
+    
+        function getLightingCostPerSqm(area) {
+            if (area <= 200) return 25;
+            if (area <= 400) return 18;
+            if (area <= 800) return 15;
+            if (area <= 1500) return 13;
+            if (area <= 2000) return 12;
+            if (area <= 3000) return 11;
+            if (area <= 4000) return 10;
+            if (area <= 6000) return 9;
+            if (area <= 8000) return 8;
+            return 7;
+        }
+    
+        function calculate() {
+            const plotArea = parseFloat(document.getElementById('plot-area').value) || 0;
+            const buildingArea = parseFloat(document.getElementById('building-area').value) || 0;
+            const pavedArea = parseFloat(document.getElementById('paved-area').value) || 0;
+            const terraceArea = parseFloat(document.getElementById('terrace-area').value) || 0;
+    
+            const pavingTypeCost = parseFloat(document.getElementById('paving-type').value) || 0;
+            const terraceMaterialCost = parseFloat(document.getElementById('terrace-material').value) || 0;
+            const plantsStandardCost = parseFloat(document.getElementById('plants-standard').value) || 0;
+    
+            const poolCost = parseFloat(document.getElementById('pool-type').value) || 0;
+            const saunaCost = parseFloat(document.getElementById('sauna-type').value) || 0;
+            const pergolaCost = parseFloat(document.getElementById('pergola-type').value) || 0;
+            const kitchenCost = parseFloat(document.getElementById('garden-kitchen').value) || 0;
+            const jacuzziCost = parseFloat(document.getElementById('jacuzzi-type').value) || 0;
+            const storageHouseCost = parseFloat(document.getElementById('storage-house').value) || 0;
+            const fireplaceZoneCost = parseFloat(document.getElementById('fireplace-zone').value) || 0;
+    
+            const greenArea = plotArea - (buildingArea + pavedArea + terraceArea);
+            if (greenArea < 0) {
+                document.getElementById('results').innerHTML = `<strong>Błąd:</strong> Powierzchnia zielona nie może być ujemna!`;
+                return;
             }
+    
+            const lawnBedsRatio = document.getElementById('lawn-beds-ratio').value;
+            const [lawnRatio, bedsRatio] = lawnBedsRatio.split('/').map(Number);
+            const lawnArea = (greenArea * lawnRatio) / 100;
+            const bedsArea = (greenArea * bedsRatio) / 100;
+    
+            // Pobranie wybranego rodzaju trawnika
+            const lawnType = document.getElementById('lawn-type').value;
+    
+            const irrigationCostPerSqm = getIrrigationCostPerSqm(greenArea);
+            const preparationCostPerSqm = getPreparationCostPerSqm(greenArea);
+            const lightingCostPerSqm = getLightingCostPerSqm(plotArea);
+            const lawnCostPerSqm = getLawnCostPerSqm(lawnArea, lawnType);
+    
+            const irrigationCost = greenArea * irrigationCostPerSqm;
+            const preparationCost = greenArea * preparationCostPerSqm;
+            const lightingCost = plotArea * lightingCostPerSqm;
+            const lawnCost = lawnArea * lawnCostPerSqm;
+            const bedsCost = bedsArea * plantsStandardCost;
+            const pavingCost = pavedArea * pavingTypeCost;
+            const terraceCost = terraceArea * terraceMaterialCost;
+    
+            const totalExtraCost = poolCost + saunaCost + pergolaCost + kitchenCost + jacuzziCost + storageHouseCost + fireplaceZoneCost;
+            const totalCost = preparationCost + irrigationCost + lightingCost + lawnCost + bedsCost + pavingCost + terraceCost + totalExtraCost;
+    
+            document.getElementById('results').innerHTML = `
+                <h3>Wyniki:</h3>
+                <p><strong>Powierzchnia zielona:</strong> ${plotArea} - (${buildingArea} + ${pavedArea} + ${terraceArea}) = ${greenArea.toFixed(2)} m²</p>
+                <ul>
+                    <li><strong>Powierzchnia trawnika:</strong> ${greenArea} * (${lawnRatio}%) = ${lawnArea.toFixed(2)} m²</li>
+                    <li><strong>Powierzchnia rabat:</strong> ${greenArea} * (${bedsRatio}%) = ${bedsArea.toFixed(2)} m²</li>
+                </ul>
+                <h4>Koszty:</h4>
+                <ul>
+                    <li>Przygotowanie terenu: ${greenArea.toFixed(2)} * ${preparationCostPerSqm} zł = ${preparationCost.toFixed(2)} zł</li>
+                    <li>Zakładanie nawadniania: ${greenArea.toFixed(2)} * ${irrigationCostPerSqm} zł = ${irrigationCost.toFixed(2)} zł</li>
+                    <li>Oświetlenie ogrodu: ${plotArea} * ${lightingCostPerSqm} zł = ${lightingCost.toFixed(2)} zł</li>
+                    <li>Zakładanie trawnika (${lawnType === 'rolling' ? 'z rolki' : 'z siewu'}): ${lawnArea.toFixed(2)} * ${lawnCostPerSqm} zł = ${lawnCost.toFixed(2)} zł</li>
+                    <li>Wykonanie rabat: ${bedsArea.toFixed(2)} * ${plantsStandardCost} zł = ${bedsCost.toFixed(2)} zł</li>
+                    <li>Kostka brukowa: ${pavedArea} * ${pavingTypeCost} zł = ${pavingCost.toFixed(2)} zł</li>
+                    <li>Tarasy: ${terraceArea} * ${terraceMaterialCost} zł = ${terraceCost.toFixed(2)} zł</li>
+                    <li>Basen: ${poolCost.toFixed(2)} zł</li>
+                    <li>Sauna: ${saunaCost.toFixed(2)} zł</li>
+                    <li>Pergola: ${pergolaCost.toFixed(2)} zł</li>
+                    <li>Kuchnia ogrodowa: ${kitchenCost.toFixed(2)} zł</li>
+                    <li>Jacuzzi: ${jacuzziCost.toFixed(2)} zł</li>
+                    <li>Domek gospodarczy: ${storageHouseCost.toFixed(2)} zł</li>
+                    <li>Strefa paleniska: ${fireplaceZoneCost.toFixed(2)} zł</li>
+                </ul>
+                <h4>Łączna kwota: ${totalCost.toFixed(2)} zł</h4>
+            `;
         }
+    </script>
 
-        // Dynamiczne koszty
-        const irrigationCostPerSqm = getIrrigationCostPerSqm(greenArea);
-        const preparationCostPerSqm = getPreparationCostPerSqm(greenArea);
-        const lightingCostPerSqm = getLightingCostPerSqm(plotArea);
-
-        const irrigationCost = greenArea * irrigationCostPerSqm;
-        const preparationCost = greenArea * preparationCostPerSqm;
-        const lightingCost = plotArea * lightingCostPerSqm;
-        const lawnCost = lawnArea * lawnTypeCost;
-        const bedsCost = bedsArea * plantsStandardCost;
-        const pavingCost = pavedArea * pavingTypeCost;
-        const terraceCost = terraceArea * terraceMaterialCost;
-
-        const totalExtraCost = poolCost + saunaCost + pergolaCost + kitchenCost + jacuzziCost + storageHouseCost + fireplaceZoneCost + mowerCost;
-        const totalCost = preparationCost + irrigationCost + lightingCost + lawnCost + bedsCost + pavingCost + terraceCost + totalExtraCost;
-
-        // Wynik
-        document.getElementById('results').innerHTML = `
-            <h3>Wyniki:</h3>
-            <p><strong>Powierzchnia zielona:</strong> ${plotArea} - (${buildingArea} + ${pavedArea} + ${terraceArea}) = ${greenArea.toFixed(2)} m²</p>
-            <ul>
-                <li><strong>Powierzchnia trawnika:</strong> ${greenArea} * (${lawnRatio}%) = ${lawnArea.toFixed(2)} m²</li>
-                <li><strong>Powierzchnia rabat:</strong> ${greenArea} * (${bedsRatio}%) = ${bedsArea.toFixed(2)} m²</li>
-            </ul>
-            <h4>Koszty:</h4>
-            <ul>
-                <li>Przygotowanie terenu: ${greenArea.toFixed(2)} * ${preparationCostPerSqm} zł = ${preparationCost.toFixed(2)} zł</li>
-                <li>Zakładanie nawadniania: ${greenArea.toFixed(2)} * ${irrigationCostPerSqm} zł = ${irrigationCost.toFixed(2)} zł</li>
-                <li>Oświetlenie ogrodu: ${plotArea} * ${lightingCostPerSqm} zł = ${lightingCost.toFixed(2)} zł</li>
-                <li>Zakładanie trawnika: ${lawnArea.toFixed(2)} * ${lawnTypeCost} zł = ${lawnCost.toFixed(2)} zł</li>
-                <li>Wykonanie nasadzeń: ${bedsArea.toFixed(2)} * ${plantsStandardCost} zł = ${bedsCost.toFixed(2)} zł</li>
-                <li>Kostka brukowa: ${pavedArea} * ${pavingTypeCost} zł = ${pavingCost.toFixed(2)} zł</li>
-                <li>Tarasy: ${terraceArea} * ${terraceMaterialCost} zł = ${terraceCost.toFixed(2)} zł</li>
-                <li>Basen: ${poolCost.toFixed(2)} zł</li>
-                <li>Sauna: ${saunaCost.toFixed(2)} zł</li>
-                <li>Pergola: ${pergolaCost.toFixed(2)} zł</li>
-                <li>Kuchnia ogrodowa: ${kitchenCost.toFixed(2)} zł</li>
-                <li>Jacuzzi: ${jacuzziCost.toFixed(2)} zł</li>
-                <li>Domek gospodarczy: ${storageHouseCost.toFixed(2)} zł</li>
-                <li>Strefa paleniska: ${fireplaceZoneCost.toFixed(2)} zł</li>
-                <li>Kosiarka automatyczna: ${mowerCost.toFixed(2)} zł</li>
-            </ul>
-            <h4>Łączna kwota: ${totalCost.toFixed(2)} zł</h4>
-            <p><a href="https://wytwornia-zieleni.pl/formularz-wyceny/polski" target="_blank" style="color: #007bff; text-decoration: none; font-weight: bold;">👉 Sprawdź cenę projektu ogrodu w Wytwórni Zieleni 👌</a></p>
-        `;
-    }
-</script>
 </body>
 </html>

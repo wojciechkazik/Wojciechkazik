@@ -75,6 +75,44 @@
             margin-top: 20px;
             text-align: left;
         }
+        
+        /* Styl dla guzika pod wynikami */
+        .button-container {
+            display: flex;
+            justify-content: center; /* Wyśrodkowanie poziome */
+            align-items: center; /* Wyśrodkowanie pionowe, jeśli potrzeba */
+            width: 100%; /* Zapewnienie, że kontener zajmuje pełną szerokość */
+            margin: 20px 0; /* Dodanie odstępów */
+        }
+
+        .wycena-button-fiolet {
+            display: flex;
+            flex-direction: column; /* Ustawienie tekstu w kolumnie */
+            justify-content: center; /* Wyśrodkowanie tekstu w pionie */
+            align-items: center; /* Wyśrodkowanie tekstu w poziomie */
+            width: 50%; /* Guzik zajmuje połowę szerokości ekranu */
+            max-width: 500px; /* Maksymalna szerokość */
+            min-width: 250px; /* Minimalna szerokość */
+            font-size: clamp(16px, 1.8vw, 24px); /* Dynamiczna wielkość czcionki */
+            background: #8e42ff;
+            color: white !important;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 15px;
+            padding: 20px 25px;
+            line-height: 1.4;
+            transition: all 300ms ease-in-out;
+            box-shadow: 0 4px 10px rgba(142, 66, 255, 0.4);
+            white-space: normal; /* Pozwala na łamanie tekstu */
+            word-wrap: break-word; /* Zapobiega wychodzeniu tekstu poza guzik */
+        }
+
+        .wycena-button-fiolet:hover {
+            transform: scale(1.07);
+            background: #7a36db;
+            transition: all 200ms ease-in-out;
+        }
     </style>
 </head>
 <body>
@@ -114,7 +152,7 @@
             <option value="350">Kostka budżetowa 50zł/m² (koszt całkowity 350 zł/m²)</option>
             <option value="450">Kostka ozdobna 100zł/m² (koszt całkowity 450 zł/m²)</option>
             <option value="550">Płyty betonowe duży format - standardowe 140zł/m² (koszt całkowity 550 zł/m²)</option>
-            <option value="900">Płyty betonowe beton architektoniczny 400zł/m² (900 zł/m²)</option>
+            <option value="900">Płyty betonowe beton architektoniczny 400zł/m² (koszt całkowity 900 zł/m²)</option>
         </select>
     </div>
     <div class="form-group">
@@ -255,9 +293,9 @@
             <option value="5000">Plac zabaw Modulaki Mini (5 tys. zł)</option>
             <option value="7000">Plac zabaw Modulaki Mini (7 tys. zł)</option>
             <option value="14000">Strefa z placem zabaw Modulaki Mini i nawierzchnią bezpieczną 4x4m (14 tys. zł) </option>
-            <option value="20000">Strefa z placem zabaw Modulaki Maxi i nawierzchnią bezpieczną 5x5m (20 tys. zł) </option>
-            <option value="30000">Strefa z placem zabaw Modulaki Giga 1 i nawierzchnią bezpieczną 6x5m (30 tys. zł) </option>
-            <option value="60000">Strefa z placem zabaw Modulaki Giga 4 i nawierzchnią bezpieczną 10x6m (60 tys. zł) </option>
+            <option value="20000">Strefa z placem zabaw Modulaki Maxi i nawierzchnią bezpieczną 5x5m (20 tys. zł)</option>
+            <option value="30000">Strefa z placem zabaw Modulaki Giga 1 i nawierzchnią bezpieczną 6x5m (30 tys. zł)</option>
+            <option value="60000">Strefa z placem zabaw Modulaki Giga 4 i nawierzchnią bezpieczną 10x6m (60 tys. zł)</option>
         </select>
     </div>
     <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
@@ -421,6 +459,16 @@
                     <li>Plac zabaw: ${playgroundCost.toFixed(2)} zł</li>
                 </ul>
                 <h4>Łączna kwota: ${totalCost.toFixed(2)} zł</h4>
+            `;
+    
+            // Dodanie guzika pod wynikami oraz paragrafu poniżej
+            document.getElementById('results').innerHTML += `
+                <div class="button-container">
+                    <a href="https://www.naffy.io/magdalena-kazimierowicz/55-gotowych-projektow-rabat-do-ogrodu-30-pomyslow-na-zywoplot-Kc8" class="wycena-button-fiolet">
+                        Gotowe projekty rabat ogrodowych<br>Pobierz eBook 50% taniej<br><strong>z kod "BLOG-WZ"! 🎉</strong>
+                    </a>
+                </div>
+                <p>Z kodem "BLOG-WZ" otrzymasz 50% rabatu – zamiast 300 zł, zapłacisz tylko 150 zł! Skorzystaj z okazji i samemu zaprojektuj swój ogród w najlepszej cenie! 🌿✨</p>
             `;
         }
     </script>

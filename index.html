@@ -1,477 +1,465 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator Kosztów Ogrodu</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f6f6f6;
-        }
-        
-        h2 {
-            font-size: 24px;
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        
-        form {
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            margin: 0 auto;
-            max-width: 500px;
-        }
-        
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #333;
-        }
-        
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            background-color: #f9f9f9;
-        }
-        
-        input:focus, select:focus {
-            border-color: #007bff;
-            outline: none;
-        }
-        
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #0f4e55;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 6px;
-            font-size: 20px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            box-sizing: border-box;
-        }
-        
-        button:hover {
-            background-color: #093a40;
-        }
-        
-        .results {
-            background-color: #ffffff;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-            text-align: left;
-        }
-        
-        /* Styl dla guzika pod wynikami */
-        .button-container {
-            display: flex;
-            justify-content: center; /* Wyśrodkowanie poziome */
-            align-items: center; /* Wyśrodkowanie pionowe, jeśli potrzeba */
-            width: 100%; /* Zapewnienie, że kontener zajmuje pełną szerokość */
-            margin: 20px 0; /* Dodanie odstępów */
-        }
-
-        .wycena-button-fiolet {
-            display: flex;
-            flex-direction: column; /* Ustawienie tekstu w kolumnie */
-            justify-content: center; /* Wyśrodkowanie tekstu w pionie */
-            align-items: center; /* Wyśrodkowanie tekstu w poziomie */
-            width: 50%; /* Guzik zajmuje połowę szerokości ekranu */
-            max-width: 500px; /* Maksymalna szerokość */
-            min-width: 250px; /* Minimalna szerokość */
-            font-size: clamp(16px, 1.8vw, 24px); /* Dynamiczna wielkość czcionki */
-            background: #8e42ff;
-            color: white !important;
-            text-align: center;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 15px;
-            padding: 20px 25px;
-            line-height: 1.4;
-            transition: all 300ms ease-in-out;
-            box-shadow: 0 4px 10px rgba(142, 66, 255, 0.4);
-            white-space: normal; /* Pozwala na łamanie tekstu */
-            word-wrap: break-word; /* Zapobiega wychodzeniu tekstu poza guzik */
-        }
-
-        .wycena-button-fiolet:hover {
-            transform: scale(1.07);
-            background: #7a36db;
-            transition: all 200ms ease-in-out;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalkulator Kosztów Ogrodu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #FFFFFF;
+    }
+    h2 {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    form {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 10px;
+      margin: 0 auto;
+      width: 100%;
+      max-width: none;
+      box-sizing: border-box;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+      background-color: #f9f9f9;
+    }
+    input:focus, select:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #0f4e55;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      font-size: 20px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      box-sizing: border-box;
+    }
+    button:hover {
+      background-color: #093a40;
+    }
+    .results {
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+      width: 100%;
+      max-width: none;
+    }
+    .button-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 20px 0;
+    }
+    .wycena-button-fiolet {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 50%;
+      max-width: 500px;
+      min-width: 250px;
+      font-size: clamp(16px, 1.8vw, 24px);
+      background: #8e42ff;
+      color: white !important;
+      text-align: center;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 15px;
+      padding: 20px 25px;
+      line-height: 1.4;
+      transition: all 300ms ease-in-out;
+      box-shadow: 0 4px 10px rgba(142, 66, 255, 0.4);
+      white-space: normal;
+      word-wrap: break-word;
+    }
+    .wycena-button-fiolet:hover {
+      transform: scale(1.07);
+      background: #7a36db;
+      transition: all 200ms ease-in-out;
+    }
+  </style>
 </head>
 <body>
-    <!-- Powierzchnie -->
-    <div class="form-group">
-        <label for="plot-area">Całkowita powierzchnia działki (m²)</label>
-        <input type="number" id="plot-area" placeholder="Podaj powierzchnię całkowitą działki w m²">
-    </div>
-    <div class="form-group">
-        <label for="building-area">Całkowita powierzchnia budynków (m²)</label>
-        <input type="number" id="building-area" placeholder="Podaj powierzchnię budynku w m²">
-    </div>
-    <div class="form-group">
-        <label for="paved-area">Całkowota powierzchnia bruków (m²)</label>
-        <input type="number" id="paved-area" placeholder="Podaj powierzchnię powierzchni utwardzonych (bruków) w m²">
-    </div>
-    <div class="form-group">
-        <label for="terrace-area">Całkowita powierzchnia tarasów (m²)</label>
-        <input type="number" id="terrace-area" placeholder="Podaj powierzchnię tarasów w m²">
-    </div>
-    <div class="form-group">
-        <label for="lawn-beds-ratio">Stosunek powierzchni trawnika/rabat (zazwyczaj trawnik to 70-90% powierzchni zielonej ogrodu)</label>
-        <select id="lawn-beds-ratio">
-            <option value="90/10">90% trawnika / 10% rabat roślinnych</option>
-            <option value="80/20">80% trawnika / 20% rabat roślinnych</option>
-            <option value="70/30">70% trawnika / 30% rabat roślinnych</option>
-            <option value="60/40">60% trawnika / 40% rabat roślinnych</option>
-            <option value="50/50">50% trawnika / 50% rabat roślinnych</option>
-        </select>
-    </div>
+  <!-- Powierzchnie -->
+  <div class="form-group">
+    <label for="plot-area">Całkowita powierzchnia działki (m²)</label>
+    <input type="number" id="plot-area" placeholder="Podaj powierzchnię całkowitą działki w m²">
+  </div>
+  <div class="form-group">
+    <label for="building-area">Całkowita powierzchnia budynków (m²)</label>
+    <input type="number" id="building-area" placeholder="Podaj powierzchnię budynku w m²">
+  </div>
+  <div class="form-group">
+    <label for="paved-area">Całkowota powierzchnia bruków (m²)</label>
+    <input type="number" id="paved-area" placeholder="Podaj powierzchnię powierzchni utwardzonych (bruków) w m²">
+  </div>
+  <div class="form-group">
+    <label for="terrace-area">Całkowita powierzchnia tarasów (m²)</label>
+    <input type="number" id="terrace-area" placeholder="Podaj powierzchnię tarasów w m²">
+  </div>
+  <div class="form-group">
+    <label for="lawn-beds-ratio">Stosunek powierzchni trawnika/rabat (zazwyczaj trawnik to 70-90% powierzchni zielonej ogrodu)</label>
+    <select id="lawn-beds-ratio">
+      <option value="90/10">90% trawnika / 10% rabat roślinnych</option>
+      <option value="80/20">80% trawnika / 20% rabat roślinnych</option>
+      <option value="70/30">70% trawnika / 30% rabat roślinnych</option>
+      <option value="60/40">60% trawnika / 40% rabat roślinnych</option>
+      <option value="50/50">50% trawnika / 50% rabat roślinnych</option>
+    </select>
+  </div>
 
-    <!-- Materiały i elementy -->
-    <div class="form-group">
-        <label for="paving-type">Wykonananie podjazdów (koszt materiał i robocizna)</label>
-        <select id="paving-type">
-            <option value="0">Brak</option>
-            <option value="350">Kostka budżetowa 50zł/m² (koszt całkowity 350 zł/m²)</option>
-            <option value="450">Kostka ozdobna 100zł/m² (koszt całkowity 450 zł/m²)</option>
-            <option value="550">Płyty betonowe duży format - standardowe 140zł/m² (koszt całkowity 550 zł/m²)</option>
-            <option value="900">Płyty betonowe beton architektoniczny 400zł/m² (koszt całkowity 900 zł/m²)</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="terrace-material">Wykonanie tarasów (koszt materiał i robocizna)</label>
-        <select id="terrace-material">
-            <option value="0">Brak</option>
-            <option value="350">Kostka budżetowa 50zł/m² (koszt całkowity 350 zł/m²)</option>
-            <option value="450">Kostka ozdobna 100zł/m² (koszt całkowity 450 zł/m²)</option>
-            <option value="550">Płyty betonowe duży format - standardowe 140zł/m² (koszt całkowity 550 zł/m²)</option>
-            <option value="650">Płyty kwarcowe układane na stopkach 200zł/m² (koszt całkowity 650 zł/m²)</option>
-            <option value="900">Płyty betonowe beton architektoniczny 400zł/m² (koszt całkowity 900 zł/m²)</option>
-            <option value="800">Deska tarasowa modrzew 150zł/m² (koszt całkowity 800 zł/m²)</option>
-            <option value="1200">Deska tarasowa kompozytowa (koszt całkowity 1200 zł/m²)</option>
-            <option value="1600">Deska tarasowa egzotyczna 600zł/m² (koszt całkowity 1600 zł/m²)</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="lawn-type">Założenie Trawnika</label>
-        <select id="lawn-type">
-            <option value="seeding">Trawnik z siewu</option>
-            <option value="rolling">Trawnik z rolki</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="plants-standard">Rośliny na rabatach (koszt nasadzeń)</label>
-        <select id="plants-standard">
-            <option value="0">Brak</option>
-            <option value="25">Opcja minimum - średni koszt nasadzeń 25 zł/m²</option>
-            <option value="50">Opcja średnia - średni koszt nasadzeń 50 zł/m²</option>
-            <option value="100">Opcja wyższa - średni koszt nasadzeń 100 zł/m²</option>
-            <option value="150">Opcja premium - średni koszt nasadzeń 150 zł/m²</option>
-        </select>
-    </div>
-    <!-- Nowy element: wykonanie rabaty -->
-    <div class="form-group">
-        <label for="flowerbed-execution">Wykonanie rabaty (koszt wykonania)</label>
-        <select id="flowerbed-execution">
-            <option value="0">Brak</option>
-            <option value="35">Agrowłóknina + ekobord - 35 zł/m²</option>
-            <option value="65">Agrowłóknina + ekobord + kora sosnowa - 65 zł/m²</option>
-            <option value="90">Agrowłóknina + ekobord + grys granitowy - 90 zł/m²</option>
-            <option value="130">Agrowłóknina + kostka betonowa + kora sosnowa - 130 zł/m²</option>
-            <option value="155">Agrowłóknina + kostka betonowa + grys granitowy - 155 zł/m²</option>
-            <option value="175">Agrowłóknina + kostka betonowa + kora kamienna - 175 zł/m²</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="pool-type">Basen ogrodowy</label>
-        <select id="pool-type">
-            <option value="0">Brak</option>
-            <option value="3295">Basen rozporowy mini (4 x 2 x 1m) 3295 zł</option>
-            <option value="3295">Basen rozporowy mały (5,5 x 2,7 x 1,32m) 3295 zł</option>
-            <option value="4595">Basen rozporowy średni (7,3 x 3,6 x 1,32m) 4595 zł</option>
-            <option value="6855">Basen rozporowy duży (9,7 x 4,9 x 1,32m) 6855 zł</option>
-            <option value="46000">Basen wkopany mały (5,3 x 3,2 x 1,5m - koszt basenu 23 tys. zł) - cena całkowita z montażem ok 46 tyś zł</option>
-            <option value="48000">Basen wkopany średni (6,3 x 3,2 x 1,5m - koszt basenu 25 tys. zł) - cena całkowita z montażem ok 48 tyś zł</option>
-            <option value="56000">Basen wkopany duży (8,4 x 3,2 x 1,5m - koszt basenu 29 tys. zł) - cena całkowita z montażem ok 56 tyś zł</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="sauna-type">Sauna ogrodowa</label>
-        <select id="sauna-type">
-            <option value="0">Brak</option>
-            <option value="25000">Mała - 2-4 osób (2,4 x 2,2 x 2,6m) 25 tys. zł</option>
-            <option value="35000">Średnia 4-6 osób (2,4 x 3,7 x 2,6m) 35 tys. zł</option>
-            <option value="50000">Duża 6-8 osób (2,4 x 4,23 x 2,6) 50 tys. zł</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="pergola-type">Pergola ogrodowa</label>
-        <select id="pergola-type">
-            <option value="0">Brak</option>
-            <option value="1500">Budżetowa/marketowa 3x4m (1,5 tys. zł)</option>
-            <option value="6000">Niższy standard 3x3m (6 tys. zł)</option>
-            <option value="9000">Niższy standard 4x4m (9 tys. zł)</option>
-            <option value="16000">Średni standard 3x6m (16 tys. zł)</option>
-            <option value="24000">Średni standard 3,6x7,2m (24 tys. zł)</option>
-            <option value="28000">Średni standard 3x4m + 2m (schowek) (28 tys. zł)</option>
-            <option value="42000">Wyższy standard - na zamówienie 4x3m (42 tys. zł)</option>
-            <option value="49000">Wyższy standard - na zamówienie 5x4m (49 tys. zł)</option>
-            <option value="55000">Wyższy standard - na zamówienie 6x4m (55 tys. zł)</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="garden-kitchen">Kuchnia ogrodowa</label>
-        <select id="garden-kitchen">
-            <option value="0">Brak</option>
-            <option value="2500">Minimum - rozbudowany grill (2,5 tys. zł)</option>
-            <option value="10000">Niższy standard (10 tys. zł)</option>
-            <option value="30000">Średni standard - na zamówienie (30 tys. zł)</option>
-            <option value="45000">Wyższy standard - na zamówienie (45 tys. zł)</option>
-            <option value="60000">Premium - na zamówienie (60 tys. zł)</option>
-            <option value="90000">Super Premium - na zamówienie (90 tys. zł)</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="jacuzzi-type">Jacuzzi ogrodowe</label>
-        <select id="jacuzzi-type">
-            <option value="0">Brak</option>
-            <option value="2500">Dmuchane budżetowe 2 osobowe (2,5 tys. zł)</option>
-            <option value="5000">Dmuchane 2-4 osobowe (5 tys. zł)</option>
-            <option value="24000">Niższy standard 4-5 osobowe (26 tys. zł)</option>
-            <option value="40000">Średni standard 4-5 osobowe (40 tys. zł)</option>
-            <option value="50000">Wyższy standard 4-5 osobowe (50 tys. zł)</option>
-            <option value="70000">Premium standard 4-5 osobowe (70 tys. zł)</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="storage-house">Domek gospodarczy</label>
-        <select id="storage-house">
-            <option value="0">Brak</option>
-            <option value="1500">Szafa ogrodowa budżetowa - blacha (1,5 tys. zł)</option>
-            <option value="2400">Szafa ogrodowa drewniana 1,2 x 1,5 x 2,3m (2,4 tys. zł)</option>
-            <option value="2800">Szafa ogrodowa drewniana 1,2 x 2,5 x 2,3m (2,8 tys. zł)</option>
-            <option value="5300">Domek ogrodowy drewniany 1,8 x 2m (5,3 tys. zł)</option>
-            <option value="7000">Domek ogrodowy drewniany 2,5 x 2,5m (7 tys. zł)</option>
-            <option value="10000">Domek ogrodowy drewniany 3 x 4m (10 tys. zł)</option>
-            <option value="15000">Domek ogrodowy drewniany 4 x 5m (15 tys. zł)</option>
-            <option value="15000">Domek ogrodowy drewniany 4 x 6m (20 tys. zł)</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="fireplace-zone">Strefa paleniska</label>
-        <select id="fireplace-zone">
-            <option value="0">Brak</option>
-            <option value="1000">Palenisko minimum - mała misa ogniskowa i siedziska (1 tys. zł)</option>
-            <option value="7000">Palenisko medium - duża misa ogniskowa, siedziska betonowe, ozdoby Adezz (7 tys. zł)</option>
-            <option value="12000">Palenisko standard - duża misa lub stół ogniowy Adezz, ozdobne ławki lub siedziska betonowe (12 tys. zł)</option>
-            <option value="20000">Palenisko maxi - dużo elementów ozdobnych z betonu i stali kortenowej (20 tys. zł)</option>
-            <option value="45000">Palenisko premium - wgłębnik z prefabrykatów betonowych, duża misa lub stół ogniowy, ozdoby Adezz (45 tys. zł)</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="playground-type">Plac zabaw</label>
-        <select id="playground-type">
-            <option value="0">Brak</option>
-            <option value="2000">plac zabaw Marketowy (2 tys. zł)</option>
-            <option value="5000">Plac zabaw Modulaki Mini (5 tys. zł)</option>
-            <option value="7000">Plac zabaw Modulaki Mini (7 tys. zł)</option>
-            <option value="14000">Strefa z placem zabaw Modulaki Mini i nawierzchnią bezpieczną 4x4m (14 tys. zł) </option>
-            <option value="20000">Strefa z placem zabaw Modulaki Maxi i nawierzchnią bezpieczną 5x5m (20 tys. zł)</option>
-            <option value="30000">Strefa z placem zabaw Modulaki Giga 1 i nawierzchnią bezpieczną 6x5m (30 tys. zł)</option>
-            <option value="60000">Strefa z placem zabaw Modulaki Giga 4 i nawierzchnią bezpieczną 10x6m (60 tys. zł)</option>
-        </select>
-    </div>
-    <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
-        <label for="mower-check" style="margin: 50;">Kosiarka automatyczna</label>
-        <input type="checkbox" id="mower-check" onclick="toggleMowerCost()" style="width: auto; margin: 0;">
-    </div>
+  <!-- Materiały i elementy -->
+  <div class="form-group">
+    <label for="paving-type">Wykonananie podjazdów (koszt materiał i robocizna)</label>
+    <select id="paving-type">
+      <option value="0">Brak</option>
+      <option value="350">Kostka budżetowa 50zł/m² (koszt całkowity 350 zł/m²)</option>
+      <option value="450">Kostka ozdobna 100zł/m² (koszt całkowity 450 zł/m²)</option>
+      <option value="550">Płyty betonowe duży format - standardowe 140zł/m² (koszt całkowity 550 zł/m²)</option>
+      <option value="900">Płyty betonowe beton architektoniczny 400zł/m² (koszt całkowity 900 zł/m²)</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="terrace-material">Wykonanie tarasów (koszt materiał i robocizna)</label>
+    <select id="terrace-material">
+      <option value="0">Brak</option>
+      <option value="350">Kostka budżetowa 50zł/m² (koszt całkowity 350 zł/m²)</option>
+      <option value="450">Kostka ozdobna 100zł/m² (koszt całkowity 450 zł/m²)</option>
+      <option value="550">Płyty betonowe duży format - standardowe 140zł/m² (koszt całkowity 550 zł/m²)</option>
+      <option value="650">Płyty kwarcowe układane na stopkach 200zł/m² (koszt całkowity 650 zł/m²)</option>
+      <option value="900">Płyty betonowe beton architektoniczny 400zł/m² (koszt całkowity 900 zł/m²)</option>
+      <option value="800">Deska tarasowa modrzew 150zł/m² (koszt całkowity 800 zł/m²)</option>
+      <option value="1200">Deska tarasowa kompozytowa (koszt całkowity 1200 zł/m²)</option>
+      <option value="1600">Deska tarasowa egzotyczna 600zł/m² (koszt całkowity 1600 zł/m²)</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="lawn-type">Założenie Trawnika</label>
+    <select id="lawn-type">
+      <option value="seeding">Trawnik z siewu</option>
+      <option value="rolling">Trawnik z rolki</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="plants-standard">Rośliny na rabatach (koszt nasadzeń)</label>
+    <select id="plants-standard">
+      <option value="0">Brak</option>
+      <option value="25">Opcja minimum - średni koszt nasadzeń 25 zł/m²</option>
+      <option value="50">Opcja średnia - średni koszt nasadzeń 50 zł/m²</option>
+      <option value="100">Opcja wyższa - średni koszt nasadzeń 100 zł/m²</option>
+      <option value="150">Opcja premium - średni koszt nasadzeń 150 zł/m²</option>
+    </select>
+  </div>
+  <!-- Nowy element: wykonanie rabaty -->
+  <div class="form-group">
+    <label for="flowerbed-execution">Wykonanie rabaty (koszt wykonania)</label>
+    <select id="flowerbed-execution">
+      <option value="0">Brak</option>
+      <option value="35">Agrowłóknina + ekobord - 35 zł/m²</option>
+      <option value="65">Agrowłóknina + ekobord + kora sosnowa - 65 zł/m²</option>
+      <option value="90">Agrowłóknina + ekobord + grys granitowy - 90 zł/m²</option>
+      <option value="130">Agrowłóknina + kostka betonowa + kora sosnowa - 130 zł/m²</option>
+      <option value="155">Agrowłóknina + kostka betonowa + grys granitowy - 155 zł/m²</option>
+      <option value="175">Agrowłóknina + kostka betonowa + kora kamienna - 175 zł/m²</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="pool-type">Basen ogrodowy</label>
+    <select id="pool-type">
+      <option value="0">Brak</option>
+      <option value="3295">Basen rozporowy mini (4 x 2 x 1m) 3295 zł</option>
+      <option value="3295">Basen rozporowy mały (5,5 x 2,7 x 1,32m) 3295 zł</option>
+      <option value="4595">Basen rozporowy średni (7,3 x 3,6 x 1,32m) 4595 zł</option>
+      <option value="6855">Basen rozporowy duży (9,7 x 4,9 x 1,32m) 6855 zł</option>
+      <option value="46000">Basen wkopany mały (5,3 x 3,2 x 1,5m - koszt basenu 23 tys. zł) - cena całkowita z montażem ok 46 tyś zł</option>
+      <option value="48000">Basen wkopany średni (6,3 x 3,2 x 1,5m - koszt basenu 25 tys. zł) - cena całkowita z montażem ok 48 tyś zł</option>
+      <option value="56000">Basen wkopany duży (8,4 x 3,2 x 1,5m - koszt basenu 29 tys. zł) - cena całkowita z montażem ok 56 tyś zł</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="sauna-type">Sauna ogrodowa</label>
+    <select id="sauna-type">
+      <option value="0">Brak</option>
+      <option value="25000">Mała - 2-4 osób (2,4 x 2,2 x 2,6m) 25 tys. zł</option>
+      <option value="35000">Średnia 4-6 osób (2,4 x 3,7 x 2,6m) 35 tys. zł</option>
+      <option value="50000">Duża 6-8 osób (2,4 x 4,23 x 2,6) 50 tys. zł</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="pergola-type">Pergola ogrodowa</label>
+    <select id="pergola-type">
+      <option value="0">Brak</option>
+      <option value="1500">Budżetowa/marketowa 3x4m (1,5 tys. zł)</option>
+      <option value="6000">Niższy standard 3x3m (6 tys. zł)</option>
+      <option value="9000">Niższy standard 4x4m (9 tys. zł)</option>
+      <option value="16000">Średni standard 3x6m (16 tys. zł)</option>
+      <option value="24000">Średni standard 3,6x7,2m (24 tys. zł)</option>
+      <option value="28000">Średni standard 3x4m + 2m (schowek) (28 tys. zł)</option>
+      <option value="42000">Wyższy standard - na zamówienie 4x3m (42 tys. zł)</option>
+      <option value="49000">Wyższy standard - na zamówienie 5x4m (49 tys. zł)</option>
+      <option value="55000">Wyższy standard - na zamówienie 6x4m (55 tys. zł)</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="garden-kitchen">Kuchnia ogrodowa</label>
+    <select id="garden-kitchen">
+      <option value="0">Brak</option>
+      <option value="2500">Minimum - rozbudowany grill (2,5 tys. zł)</option>
+      <option value="10000">Niższy standard (10 tys. zł)</option>
+      <option value="30000">Średni standard - na zamówienie (30 tys. zł)</option>
+      <option value="45000">Wyższy standard - na zamówienie (45 tys. zł)</option>
+      <option value="60000">Premium - na zamówienie (60 tys. zł)</option>
+      <option value="90000">Super Premium - na zamówienie (90 tys. zł)</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="jacuzzi-type">Jacuzzi ogrodowe</label>
+    <select id="jacuzzi-type">
+      <option value="0">Brak</option>
+      <option value="2500">Dmuchane budżetowe 2 osobowe (2,5 tys. zł)</option>
+      <option value="5000">Dmuchane 2-4 osobowe (5 tys. zł)</option>
+      <option value="24000">Niższy standard 4-5 osobowe (26 tys. zł)</option>
+      <option value="40000">Średni standard 4-5 osobowe (40 tys. zł)</option>
+      <option value="50000">Wyższy standard 4-5 osobowe (50 tys. zł)</option>
+      <option value="70000">Premium standard 4-5 osobowe (70 tys. zł)</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="storage-house">Domek gospodarczy</label>
+    <select id="storage-house">
+      <option value="0">Brak</option>
+      <option value="1500">Szafa ogrodowa budżetowa - blacha (1,5 tys. zł)</option>
+      <option value="2400">Szafa ogrodowa drewniana 1,2 x 1,5 x 2,3m (2,4 tys. zł)</option>
+      <option value="2800">Szafa ogrodowa drewniana 1,2 x 2,5 x 2,3m (2,8 tys. zł)</option>
+      <option value="5300">Domek ogrodowy drewniany 1,8 x 2m (5,3 tys. zł)</option>
+      <option value="7000">Domek ogrodowy drewniany 2,5 x 2,5m (7 tys. zł)</option>
+      <option value="10000">Domek ogrodowy drewniany 3 x 4m (10 tys. zł)</option>
+      <option value="15000">Domek ogrodowy drewniany 4 x 5m (15 tys. zł)</option>
+      <option value="15000">Domek ogrodowy drewniany 4 x 6m (20 tys. zł)</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="fireplace-zone">Strefa paleniska</label>
+    <select id="fireplace-zone">
+      <option value="0">Brak</option>
+      <option value="1000">Palenisko minimum - mała misa ogniskowa i siedziska (1 tys. zł)</option>
+      <option value="7000">Palenisko medium - duża misa ogniskowa, siedziska betonowe, ozdoby Adezz (7 tys. zł)</option>
+      <option value="12000">Palenisko standard - duża misa lub stół ogniowy Adezz, ozdobne ławki lub siedziska betonowe (12 tys. zł)</option>
+      <option value="20000">Palenisko maxi - dużo elementów ozdobnych z betonu i stali kortenowej (20 tys. zł)</option>
+      <option value="45000">Palenisko premium - wgłębnik z prefabrykatów betonowych, duża misa lub stół ogniowy, ozdoby Adezz (45 tys. zł)</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="playground-type">Plac zabaw</label>
+    <select id="playground-type">
+      <option value="0">Brak</option>
+      <option value="2000">plac zabaw Marketowy (2 tys. zł)</option>
+      <option value="5000">Plac zabaw Modulaki Mini (5 tys. zł)</option>
+      <option value="7000">Plac zabaw Modulaki Mini (7 tys. zł)</option>
+      <option value="14000">Strefa z placem zabaw Modulaki Mini i nawierzchnią bezpieczną 4x4m (14 tys. zł)</option>
+      <option value="20000">Strefa z placem zabaw Modulaki Maxi i nawierzchnią bezpieczną 5x5m (20 tys. zł)</option>
+      <option value="30000">Strefa z placem zabaw Modulaki Giga 1 i nawierzchnią bezpieczną 6x5m (30 tys. zł)</option>
+      <option value="60000">Strefa z placem zabaw Modulaki Giga 4 i nawierzchnią bezpieczną 10x6m (60 tys. zł)</option>
+    </select>
+  </div>
+  <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+    <label for="mower-check" style="margin: 50;">Kosiarka automatyczna</label>
+    <input type="checkbox" id="mower-check" onclick="toggleMowerCost()" style="width: auto; margin: 0;">
+  </div>
 
-    <!-- Oblicz -->
-    <button type="button" onclick="calculate()">Oblicz</button>
+  <!-- Oblicz -->
+  <button type="button" onclick="calculate()">Oblicz</button>
 
-    <!-- Wyniki -->
-    <div id="results" class="results"></div>
+  <!-- Wyniki -->
+  <div id="results" class="results"></div>
 
-    <script>
-        let includeMower = false;
-    
-        function toggleMowerCost() {
-            includeMower = document.getElementById('mower-check').checked;
-        }
-    
-        // Funkcja dynamicznej ceny trawnika
-        function getLawnCostPerSqm(area, lawnType) {
-            let baseCost;
-            if (area <= 500) baseCost = 30; // Cena wyższa dla mniejszych działek
-            else if (area <= 1000) baseCost = 17;
-            else if (area <= 2000) baseCost = 15;
-            else if (area <= 3000) baseCost = 12;
-            else if (area <= 4000) baseCost = 10;
-            else if (area <= 5000) baseCost = 9;
-            else if (area <= 6000) baseCost = 8;
-            else if (area <= 7000) baseCost = 7;
-            else if (area <= 8000) baseCost = 6;
-            else if (area <= 9000) baseCost = 5;
-            else baseCost = 5; // Cena niższa dla większych działek
-    
-            // Cena dwukrotnie wyższa dla trawnika z rolki
-            return lawnType === "rolling" ? baseCost * 2 : baseCost;
-        }
-    
-        // Funkcje dynamiczne dla innych elementów (pozostają bez zmian)
-        function getIrrigationCostPerSqm(area) {
-            if (area <= 200) return 44;
-            if (area <= 400) return 32;
-            if (area <= 800) return 25;
-            if (area <= 1500) return 21;
-            if (area <= 2000) return 19;
-            if (area <= 3000) return 14;
-            if (area <= 4000) return 13;
-            if (area <= 6000) return 12;
-            if (area <= 8000) return 11;
-            return 9;
-        }
-    
-        function getPreparationCostPerSqm(area) {
-            if (area <= 200) return 30;
-            if (area <= 400) return 28;
-            if (area <= 800) return 25;
-            if (area <= 1500) return 22;
-            if (area <= 2000) return 19;
-            if (area <= 3000) return 13;
-            if (area <= 4000) return 11;
-            if (area <= 6000) return 10;
-            if (area <= 8000) return 8;
-            return 6;
-        }
-    
-        function getLightingCostPerSqm(area) {
-            if (area <= 200) return 25;
-            if (area <= 400) return 18;
-            if (area <= 800) return 15;
-            if (area <= 1500) return 13;
-            if (area <= 2000) return 12;
-            if (area <= 3000) return 11;
-            if (area <= 4000) return 10;
-            if (area <= 6000) return 9;
-            if (area <= 8000) return 8;
-            return 7;
-        }
-    
-        function calculate() {
-            const plotArea = parseFloat(document.getElementById('plot-area').value) || 0;
-            const buildingArea = parseFloat(document.getElementById('building-area').value) || 0;
-            const pavedArea = parseFloat(document.getElementById('paved-area').value) || 0;
-            const terraceArea = parseFloat(document.getElementById('terrace-area').value) || 0;
-    
-            const pavingTypeCost = parseFloat(document.getElementById('paving-type').value) || 0;
-            const terraceMaterialCost = parseFloat(document.getElementById('terrace-material').value) || 0;
-            const plantsStandardCost = parseFloat(document.getElementById('plants-standard').value) || 0;
-    
-            // Pobranie kosztu wykonania rabaty z nowego selecta
-            const flowerbedExecutionCostPerSqm = parseFloat(document.getElementById('flowerbed-execution').value) || 0;
-    
-            const poolCost = parseFloat(document.getElementById('pool-type').value) || 0;
-            const saunaCost = parseFloat(document.getElementById('sauna-type').value) || 0;
-            const pergolaCost = parseFloat(document.getElementById('pergola-type').value) || 0;
-            const kitchenCost = parseFloat(document.getElementById('garden-kitchen').value) || 0;
-            const jacuzziCost = parseFloat(document.getElementById('jacuzzi-type').value) || 0;
-            const storageHouseCost = parseFloat(document.getElementById('storage-house').value) || 0;
-            const fireplaceZoneCost = parseFloat(document.getElementById('fireplace-zone').value) || 0;
-            // Pobranie kosztu placu zabaw (analogicznie do paleniska)
-            const playgroundCost = parseFloat(document.getElementById('playground-type').value) || 0;
-    
-            const greenArea = plotArea - (buildingArea + pavedArea + terraceArea);
-            if (greenArea < 0) {
-                document.getElementById('results').innerHTML = `<strong>Błąd:</strong> Powierzchnia zielona nie może być ujemna!`;
-                return;
-            }
-    
-            const lawnBedsRatio = document.getElementById('lawn-beds-ratio').value;
-            const [lawnRatio, bedsRatio] = lawnBedsRatio.split('/').map(Number);
-            const lawnArea = (greenArea * lawnRatio) / 100;
-            const bedsArea = (greenArea * bedsRatio) / 100;
-    
-            // Pobranie wybranego rodzaju trawnika
-            const lawnType = document.getElementById('lawn-type').value;
-    
-            const irrigationCostPerSqm = getIrrigationCostPerSqm(greenArea);
-            const preparationCostPerSqm = getPreparationCostPerSqm(greenArea);
-            const lightingCostPerSqm = getLightingCostPerSqm(plotArea);
-            const lawnCostPerSqm = getLawnCostPerSqm(lawnArea, lawnType);
-    
-            const irrigationCost = greenArea * irrigationCostPerSqm;
-            const preparationCost = greenArea * preparationCostPerSqm;
-            const lightingCost = plotArea * lightingCostPerSqm;
-            const lawnCost = lawnArea * lawnCostPerSqm;
-            const bedsCost = bedsArea * plantsStandardCost;
-    
-            // Obliczenie kosztu wykonania rabaty (analogicznie do kosztu nasadzeń)
-            const flowerbedExecutionCost = bedsArea * flowerbedExecutionCostPerSqm;
-    
-            const pavingCost = pavedArea * pavingTypeCost;
-            const terraceCost = terraceArea * terraceMaterialCost;
-    
-            const totalExtraCost = poolCost + saunaCost + pergolaCost + kitchenCost + jacuzziCost + storageHouseCost + fireplaceZoneCost + playgroundCost;
-            const totalCost = preparationCost + irrigationCost + lightingCost + lawnCost + bedsCost + flowerbedExecutionCost + pavingCost + terraceCost + totalExtraCost;
-    
-            document.getElementById('results').innerHTML = `
-                <h3>Wyniki:</h3>
-                <p><strong>Powierzchnia zielona:</strong> ${plotArea} - (${buildingArea} + ${pavedArea} + ${terraceArea}) = ${greenArea.toFixed(2)} m²</p>
-                <ul>
-                    <li><strong>Powierzchnia trawnika:</strong> ${greenArea} * (${lawnRatio}%) = ${lawnArea.toFixed(2)} m²</li>
-                    <li><strong>Powierzchnia rabat:</strong> ${greenArea} * (${bedsRatio}%) = ${bedsArea.toFixed(2)} m²</li>
-                </ul>
-                <h4>Koszty:</h4>
-                <ul>
-                    <li>Przygotowanie terenu: ${greenArea.toFixed(2)} * ${preparationCostPerSqm} zł = ${preparationCost.toFixed(2)} zł</li>
-                    <li>Zakładanie nawadniania: ${greenArea.toFixed(2)} * ${irrigationCostPerSqm} zł = ${irrigationCost.toFixed(2)} zł</li>
-                    <li>Oświetlenie ogrodu: ${plotArea} * ${lightingCostPerSqm} zł = ${lightingCost.toFixed(2)} zł</li>
-                    <li>Zakładanie trawnika (${lawnType === 'rolling' ? 'z rolki' : 'z siewu'}): ${lawnArea.toFixed(2)} * ${lawnCostPerSqm} zł = ${lawnCost.toFixed(2)} zł</li>
-                    <li>Rośliny na rabatach: ${bedsArea.toFixed(2)} * ${plantsStandardCost} zł = ${bedsCost.toFixed(2)} zł</li>
-                    <li>Wykonanie rabaty: ${bedsArea.toFixed(2)} * ${flowerbedExecutionCostPerSqm} zł = ${flowerbedExecutionCost.toFixed(2)} zł</li>
-                    <li>Kostka brukowa: ${pavedArea} * ${pavingTypeCost} zł = ${pavingCost.toFixed(2)} zł</li>
-                    <li>Tarasy: ${terraceArea} * ${terraceMaterialCost} zł = ${terraceCost.toFixed(2)} zł</li>
-                    <li>Basen: ${poolCost.toFixed(2)} zł</li>
-                    <li>Sauna: ${saunaCost.toFixed(2)} zł</li>
-                    <li>Pergola: ${pergolaCost.toFixed(2)} zł</li>
-                    <li>Kuchnia ogrodowa: ${kitchenCost.toFixed(2)} zł</li>
-                    <li>Jacuzzi: ${jacuzziCost.toFixed(2)} zł</li>
-                    <li>Domek gospodarczy: ${storageHouseCost.toFixed(2)} zł</li>
-                    <li>Strefa paleniska: ${fireplaceZoneCost.toFixed(2)} zł</li>
-                    <li>Plac zabaw: ${playgroundCost.toFixed(2)} zł</li>
-                </ul>
-                <h4>Łączna kwota: ${totalCost.toFixed(2)} zł</h4>
-            `;
-    
-            // Dodanie guzika pod wynikami oraz paragrafu poniżej
-            document.getElementById('results').innerHTML += `
-                <div class="button-container">
-                    <a href="https://bit.ly/gotowe-rabaty" target="_blank" class="wycena-button-fiolet">
-                        Gotowe projekty rabat ogrodowych<br>Pobierz eBook 50% taniej<br><strong>Kod promocyjny "BLOG-WZ"! 🎉</strong>
-                    </a>
-                </div>
-                <p>Z kodem "BLOG-WZ" otrzymasz 50% rabatu – zamiast 300 zł, zapłacisz tylko 150 zł! Skorzystaj z okazji i samemu zaprojektuj swój ogród w najlepszej cenie! 🌿✨</p>
-            `;
-        }
-    </script>
+  <script>
+    let includeMower = false;
+  
+    function toggleMowerCost() {
+      includeMower = document.getElementById('mower-check').checked;
+    }
+  
+    // Funkcja dynamicznej ceny trawnika
+    function getLawnCostPerSqm(area, lawnType) {
+      let baseCost;
+      if (area <= 500) baseCost = 30;
+      else if (area <= 1000) baseCost = 17;
+      else if (area <= 2000) baseCost = 15;
+      else if (area <= 3000) baseCost = 12;
+      else if (area <= 4000) baseCost = 10;
+      else if (area <= 5000) baseCost = 9;
+      else if (area <= 6000) baseCost = 8;
+      else if (area <= 7000) baseCost = 7;
+      else if (area <= 8000) baseCost = 6;
+      else if (area <= 9000) baseCost = 5;
+      else baseCost = 5;
+  
+      return lawnType === "rolling" ? baseCost * 2 : baseCost;
+    }
+  
+    function getIrrigationCostPerSqm(area) {
+      if (area <= 200) return 44;
+      if (area <= 400) return 32;
+      if (area <= 800) return 25;
+      if (area <= 1500) return 21;
+      if (area <= 2000) return 19;
+      if (area <= 3000) return 14;
+      if (area <= 4000) return 13;
+      if (area <= 6000) return 12;
+      if (area <= 8000) return 11;
+      return 9;
+    }
+  
+    function getPreparationCostPerSqm(area) {
+      if (area <= 200) return 30;
+      if (area <= 400) return 28;
+      if (area <= 800) return 25;
+      if (area <= 1500) return 22;
+      if (area <= 2000) return 19;
+      if (area <= 3000) return 13;
+      if (area <= 4000) return 11;
+      if (area <= 6000) return 10;
+      if (area <= 8000) return 8;
+      return 6;
+    }
+  
+    function getLightingCostPerSqm(area) {
+      if (area <= 200) return 25;
+      if (area <= 400) return 18;
+      if (area <= 800) return 15;
+      if (area <= 1500) return 13;
+      if (area <= 2000) return 12;
+      if (area <= 3000) return 11;
+      if (area <= 4000) return 10;
+      if (area <= 6000) return 9;
+      if (area <= 8000) return 8;
+      return 7;
+    }
+  
+    function calculate() {
+      const plotArea = parseFloat(document.getElementById('plot-area').value) || 0;
+      const buildingArea = parseFloat(document.getElementById('building-area').value) || 0;
+      const pavedArea = parseFloat(document.getElementById('paved-area').value) || 0;
+      const terraceArea = parseFloat(document.getElementById('terrace-area').value) || 0;
+  
+      const pavingTypeCost = parseFloat(document.getElementById('paving-type').value) || 0;
+      const terraceMaterialCost = parseFloat(document.getElementById('terrace-material').value) || 0;
+      const plantsStandardCost = parseFloat(document.getElementById('plants-standard').value) || 0;
+  
+      const flowerbedExecutionCostPerSqm = parseFloat(document.getElementById('flowerbed-execution').value) || 0;
+  
+      const poolCost = parseFloat(document.getElementById('pool-type').value) || 0;
+      const saunaCost = parseFloat(document.getElementById('sauna-type').value) || 0;
+      const pergolaCost = parseFloat(document.getElementById('pergola-type').value) || 0;
+      const kitchenCost = parseFloat(document.getElementById('garden-kitchen').value) || 0;
+      const jacuzziCost = parseFloat(document.getElementById('jacuzzi-type').value) || 0;
+      const storageHouseCost = parseFloat(document.getElementById('storage-house').value) || 0;
+      const fireplaceZoneCost = parseFloat(document.getElementById('fireplace-zone').value) || 0;
+      const playgroundCost = parseFloat(document.getElementById('playground-type').value) || 0;
+  
+      const greenArea = plotArea - (buildingArea + pavedArea + terraceArea);
+      if (greenArea < 0) {
+        document.getElementById('results').innerHTML = `<strong>Błąd:</strong> Powierzchnia zielona nie może być ujemna!`;
+        return;
+      }
+  
+      const lawnBedsRatio = document.getElementById('lawn-beds-ratio').value;
+      const [lawnRatio, bedsRatio] = lawnBedsRatio.split('/').map(Number);
+      const lawnArea = (greenArea * lawnRatio) / 100;
+      const bedsArea = (greenArea * bedsRatio) / 100;
+  
+      const lawnType = document.getElementById('lawn-type').value;
+  
+      const irrigationCostPerSqm = getIrrigationCostPerSqm(greenArea);
+      const preparationCostPerSqm = getPreparationCostPerSqm(greenArea);
+      const lightingCostPerSqm = getLightingCostPerSqm(plotArea);
+      const lawnCostPerSqm = getLawnCostPerSqm(lawnArea, lawnType);
+  
+      const irrigationCost = greenArea * irrigationCostPerSqm;
+      const preparationCost = greenArea * preparationCostPerSqm;
+      const lightingCost = plotArea * lightingCostPerSqm;
+      const lawnCost = lawnArea * lawnCostPerSqm;
+      const bedsCost = bedsArea * plantsStandardCost;
+  
+      const flowerbedExecutionCost = bedsArea * flowerbedExecutionCostPerSqm;
+  
+      const pavingCost = pavedArea * pavingTypeCost;
+      const terraceCost = terraceArea * terraceMaterialCost;
+  
+      const totalExtraCost = poolCost + saunaCost + pergolaCost + kitchenCost + jacuzziCost + storageHouseCost + fireplaceZoneCost + playgroundCost;
+      const totalCost = preparationCost + irrigationCost + lightingCost + lawnCost + bedsCost + flowerbedExecutionCost + pavingCost + terraceCost + totalExtraCost;
+  
+      document.getElementById('results').innerHTML = `
+          <h3>Wyniki:</h3>
+          <p><strong>Powierzchnia zielona:</strong> ${plotArea} - (${buildingArea} + ${pavedArea} + ${terraceArea}) = ${greenArea.toFixed(2)} m²</p>
+          <ul>
+              <li><strong>Powierzchnia trawnika:</strong> ${greenArea} * (${lawnRatio}%) = ${lawnArea.toFixed(2)} m²</li>
+              <li><strong>Powierzchnia rabat:</strong> ${greenArea} * (${bedsRatio}%) = ${bedsArea.toFixed(2)} m²</li>
+          </ul>
+          <h4>Koszty:</h4>
+          <ul>
+              <li>Przygotowanie terenu: ${greenArea.toFixed(2)} * ${preparationCostPerSqm} zł = ${preparationCost.toFixed(2)} zł</li>
+              <li>Zakładanie nawadniania: ${greenArea.toFixed(2)} * ${irrigationCostPerSqm} zł = ${irrigationCost.toFixed(2)} zł</li>
+              <li>Oświetlenie ogrodu: ${plotArea} * ${lightingCostPerSqm} zł = ${lightingCost.toFixed(2)} zł</li>
+              <li>Zakładanie trawnika (${lawnType === 'rolling' ? 'z rolki' : 'z siewu'}): ${lawnArea.toFixed(2)} * ${lawnCostPerSqm} zł = ${lawnCost.toFixed(2)} zł</li>
+              <li>Rośliny na rabatach: ${bedsArea.toFixed(2)} * ${plantsStandardCost} zł = ${bedsCost.toFixed(2)} zł</li>
+              <li>Wykonanie rabaty: ${bedsArea.toFixed(2)} * ${flowerbedExecutionCostPerSqm} zł = ${flowerbedExecutionCost.toFixed(2)} zł</li>
+              <li>Kostka brukowa: ${pavedArea} * ${pavingTypeCost} zł = ${pavingCost.toFixed(2)} zł</li>
+              <li>Tarasy: ${terraceArea} * ${terraceMaterialCost} zł = ${terraceCost.toFixed(2)} zł</li>
+              <li>Basen: ${poolCost.toFixed(2)} zł</li>
+              <li>Sauna: ${saunaCost.toFixed(2)} zł</li>
+              <li>Pergola: ${pergolaCost.toFixed(2)} zł</li>
+              <li>Kuchnia ogrodowa: ${kitchenCost.toFixed(2)} zł</li>
+              <li>Jacuzzi: ${jacuzziCost.toFixed(2)} zł</li>
+              <li>Domek gospodarczy: ${storageHouseCost.toFixed(2)} zł</li>
+              <li>Strefa paleniska: ${fireplaceZoneCost.toFixed(2)} zł</li>
+              <li>Plac zabaw: ${playgroundCost.toFixed(2)} zł</li>
+          </ul>
+          <h4>Łączna kwota: ${totalCost.toFixed(2)} zł</h4>
+      `;
+  
+      // Dodanie nowego guzika z eBookiem
+      if (!document.getElementById('ebookOffer')) {
+        const ebookOfferHTML = `
+          <div class="button-container" id="ebookOffer">
+            <a href="https://www.canva.com/design/DAGgwId29o0/ek4cu3ZYKvhtZs41uWVV5Q/view?utm_content=DAGgwId29o0&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=he859570327" target="_blank" class="wycena-button-fiolet">
+              Planjesz ogród🌲?<br>Sprawdź za darmo gotowe projekty rabat ogrodowych!(kliknij w guzik)
+            </a>
+          </div>
+          <p id="ebookInfo">Z kodem "BLOG-WZ" zniżka na pełna wersję ebooka 🌿✨</p>
+        `;
+        document.getElementById('results').innerHTML += ebookOfferHTML;
+      }
+    }
+  </script>
 
 </body>
 </html>

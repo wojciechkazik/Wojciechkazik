@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kalkulator Kosztów Ogrodu</title>
   <style>
+    html, body {
+      overflow-x: hidden;
+    }
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -24,7 +27,7 @@
       padding: 10px;
       margin: 0 auto;
       width: 100%;
-      max-width: none;
+      max-width: 100%;
       box-sizing: border-box;
     }
     label {
@@ -68,7 +71,7 @@
       padding: 20px;
       margin-top: 20px;
       width: 100%;
-      max-width: none;
+      max-width: 100%;
     }
     .button-container {
       display: flex;
@@ -290,7 +293,7 @@
     </select>
   </div>
   <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
-    <label for="mower-check" style="margin: 50;">Kosiarka automatyczna</label>
+    <label for="mower-check" style="margin: 0;">Kosiarka automatyczna</label>
     <input type="checkbox" id="mower-check" onclick="toggleMowerCost()" style="width: auto; margin: 0;">
   </div>
 

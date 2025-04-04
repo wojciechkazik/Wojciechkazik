@@ -460,16 +460,32 @@
           </ul>
           <h4>Łączna kwota: ${totalCost.toFixed(2)} zł</h4>
       `;
-  
-      // Dodanie nowego guzika z eBookiem
+      
+      // Dodanie sekcji z propozycjami innych wpisów (pod wynikami, nad przyciskiem e-booka)
+      if (!document.getElementById('relatedPosts')) {
+        const relatedPostsHTML = `
+          <div id="relatedPosts" class="related-posts" style="margin-top: 20px; padding: 15px; background-color: #f1f1f1; border-radius: 10px;">
+            <p style="font-weight: bold; margin-bottom: 10px;">💡 Sprawdź też:</p>
+            <ul style="list-style-type: disc; padding-left: 20px; margin: 0;">
+              <li><a href="https://wytwornia-zieleni.pl/blog/jak-zaprojektowac-ogrod-przydomowy" target="_blank">Jak zaplanować ogród?</a></li>
+              <li><a href="https://wytwornia-zieleni.pl/blog/zakladanie-ogrodu-krok-po-kroku" target="_blank">Jak założyć ogród krok po kroku?</a></li>
+              <li><a href="https://wytwornia-zieleni.pl/blog/prace-ziemne-przygotowanie-dzialki-pod-ogrod" target="_blank">Jak wyrównać teren na działce?</a></li>
+              <li><a href="https://wytwornia-zieleni.pl/blog/zakladanie-ogrodu-5-kosztownych-bledow" target="_blank">5 kosztownych błędów- jak uniknąć?</a></li>
+            </ul>
+          </div>
+        `;
+        document.getElementById('results').innerHTML += relatedPostsHTML;
+      }
+      
+      // Dodanie guzika z ofertą e-booka
       if (!document.getElementById('ebookOffer')) {
         const ebookOfferHTML = `
           <div class="button-container" id="ebookOffer">
             <a href="https://wytwornia-zieleni.pl/rabaty-ogrodowe-gotowe-projekty" target="_blank" class="wycena-button-fiolet">
-              Planjesz ogród🌲?<br>Sprawdź gotowe projekty rabat ogrodowych!
+              Planujesz ogród🌲?<br>Sprawdź gotowe projekty rabat ogrodowych!
             </a>
           </div>
-          <p id="ebookInfo">Z kodem "BLOG-WZ" zniżka na pełna wersję ebooka 🌿✨</p>
+          <p id="ebookInfo">Z kodem "BLOG-WZ" zniżka na pełną wersję ebooka 🌿✨</p>
         `;
         document.getElementById('results').innerHTML += ebookOfferHTML;
       }

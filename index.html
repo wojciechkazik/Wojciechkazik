@@ -18,13 +18,14 @@
     body {
       font-family: Arial, sans-serif;
       background-color: #FFFFFF;
-      padding: 20px;
+      padding: 10px;
     }
     .container {
-      max-width: 800px;
-      margin: 0 auto;
+      max-width: none;
+      width: 100%;
+      margin: 0;
       background-color: #fff;
-      padding: 20px;
+      padding: 10px;
       border-radius: 8px;
       /* Dodany cień dookoła */
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -114,6 +115,43 @@
       transform: scale(1.07);
       background: #7a36db;
       transition: all 200ms ease-in-out;
+    }
+    .cta-section {
+      background-color: #f0f8ff;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    .cta-button {
+      display: inline-block;
+      background: #8e42ff;
+      color: white !important;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 15px;
+      padding: 15px 30px;
+      margin-top: 15px;
+      transition: all 300ms ease-in-out;
+      box-shadow: 0 4px 10px rgba(142, 66, 255, 0.4);
+    }
+    .cta-button:hover {
+      transform: scale(1.05);
+      background: #7a36db;
+    }
+    .tips-section {
+      background-color: #e8f5e8;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .tips-section h3 {
+      color: #2d5a2d;
+      margin-bottom: 15px;
+    }
+    .tips-section ul {
+      color: #2d5a2d;
+      line-height: 1.6;
     }
   </style>
 </head>
@@ -312,7 +350,27 @@
     <button type="button" onclick="calculate()">Oblicz</button>
   
     <!-- Wyniki -->
-    <div id="results" class="results"></div>
+    <div id="results" class="results" style="display: none;"></div>
+    
+    <!-- CTA Section -->
+    <div class="cta-section" style="display: none;" id="cta-section">
+      <h3>🌿 Gotowy na projekt swojego wymarzonego ogrodu?</h3>
+      <p>Uzyskaj profesjonalną wycenę i konsultację w zakresie projektowania ogrodu od ekspertów Wytwornia Zieleni.</p>
+      <a href="https://wytwornia-zieleni.pl/ile-kosztuje-projekt-ogrodu" target="_blank" class="cta-button">Zamów profesjonalny projekt ogrodu</a>
+    </div>
+    
+    <!-- Money-Saving Tips -->
+    <div class="tips-section" style="display: none;" id="tips-section">
+      <h3>💰 Porady oszczędnościowe:</h3>
+      <ul>
+        <li><strong>Planuj etapami:</strong> Zacznij od podstawowych elementów jak trawnik i podstawowe nasadzenia, a kolejne funkcje dodawaj stopniowo</li>
+        <li><strong>Rób co możesz sam:</strong> Rozważ samodzielne wykonanie prostszych elementów jak rabaty czy podstawowe meble ogrodowe</li>
+        <li><strong>Wybieraj właściwy czas:</strong> Planuj prace w okresach poza sezonem, aby uzyskać lepsze stawki wykonawców</li>
+        <li><strong>Stawaj na lokalność:</strong> Wybieraj rośliny i materiały z lokalnych źródeł, aby zmniejszyć koszty transportu</li>
+        <li><strong>Wielofunkcyjność to klucz:</strong> Wybieraj elementy służące kilku celom, jak ławki ze schowkiem czy pergole ze zintegrowanym oświetleniem</li>
+        <li><strong>Zbiorowe zakupy:</strong> Koordynuj się z sąsiadami przy zakupie materiałów hurtowo, aby uzyskać lepsze ceny</li>
+      </ul>
+    </div>
   </div>
   
   <script>
@@ -403,6 +461,7 @@
       const greenArea = plotArea - (buildingArea + pavedArea + terraceArea);
       if (greenArea < 0) {
         document.getElementById('results').innerHTML = `<strong>Błąd:</strong> Powierzchnia zielona nie może być ujemna!`;
+        document.getElementById('results').style.display = 'block';
         return;
       }
   
@@ -429,7 +488,10 @@
       const pavingCost = pavedArea * pavingTypeCost;
       const terraceCost = terraceArea * terraceMaterialCost;
   
-      const totalExtraCost = poolCost + saunaCost + pergolaCost + kitchenCost + jacuzziCost + storageHouseCost + fireplaceZoneCost + playgroundCost;
+      // Koszt kosiarki automatycznej (bazuje na powierzchni trawnika)
+      const mowerCost = includeMower ? (4000 + (lawnArea * 1)) : 0;
+  
+      const totalExtraCost = poolCost + saunaCost + pergolaCost + kitchenCost + jacuzziCost + storageHouseCost + fireplaceZoneCost + playgroundCost + mowerCost;
       const totalCost = preparationCost + irrigationCost + lightingCost + lawnCost + bedsCost + flowerbedExecutionCost + pavingCost + terraceCost + totalExtraCost;
   
       document.getElementById('results').innerHTML = `
@@ -457,39 +519,19 @@
               <li>Domek gospodarczy: ${storageHouseCost.toFixed(2)} zł</li>
               <li>Strefa paleniska: ${fireplaceZoneCost.toFixed(2)} zł</li>
               <li>Plac zabaw: ${playgroundCost.toFixed(2)} zł</li>
+              ${includeMower ? `<li>Kosiarka automatyczna: ${mowerCost.toFixed(2)} zł</li>` : ''}
           </ul>
-          <h4>Łączna kwota: ${totalCost.toFixed(2)} zł</h4>
+          <h4 style="font-size: 1.5em; color: #0f4e55;">Łączna kwota: ${totalCost.toFixed(2)} zł</h4>
+          <p style="font-style: italic; color: #666; margin-top: 15px;">
+            *Podane ceny są szacunkowe i mogą się różnić w zależności od lokalizacji, konkretnych materiałów i kosztów robocizny. 
+            Zawsze uzyskaj wiele wycen od lokalnych wykonawców dla dokładnej wyceny.
+          </p>
       `;
       
-      // Dodanie sekcji z propozycjami innych wpisów (pod wynikami, nad przyciskiem e-booka)
-      if (!document.getElementById('relatedPosts')) {
-        const relatedPostsHTML = `
-          <div id="relatedPosts" class="related-posts" style="margin-top: 20px; padding: 15px; background-color: #f1f1f1; border-radius: 10px;">
-            <p style="font-weight: bold; margin-bottom: 10px;">💡 Sprawdź też:</p>
-            <ul style="list-style-type: disc; padding-left: 20px; margin: 0;">
-              <li><a href="https://wytwornia-zieleni.pl/blog/jak-zaprojektowac-ogrod-przydomowy" target="_blank">Jak zaplanować ogród?</a></li>
-              <li><a href="https://wytwornia-zieleni.pl/blog/zakladanie-ogrodu-krok-po-kroku" target="_blank">Jak założyć ogród krok po kroku?</a></li>
-              <li><a href="https://wytwornia-zieleni.pl/blog/prace-ziemne-przygotowanie-dzialki-pod-ogrod" target="_blank">Jak wyrównać teren na działce?</a></li>
-              <li><a href="https://wytwornia-zieleni.pl/blog/zakladanie-ogrodu-5-kosztownych-bledow" target="_blank">5 kosztownych błędów- jak uniknąć?</a></li>
-            </ul>
-          </div>
-        `;
-        document.getElementById('results').innerHTML += relatedPostsHTML;
-      }
+      document.getElementById('results').style.display = 'block';
+      document.getElementById('cta-section').style.display = 'block';
+      document.getElementById('tips-section').style.display = 'block';
       
-      // Dodanie guzika z ofertą e-booka
-      if (!document.getElementById('ebookOffer')) {
-        const ebookOfferHTML = `
-          <div class="button-container" id="ebookOffer">
-            <a href="https://wytwornia-zieleni.pl/rabaty-ogrodowe-gotowe-projekty" target="_blank" class="wycena-button-fiolet">
-              Planujesz ogród🌲?<br>Sprawdź gotowe projekty rabat ogrodowych!
-            </a>
-          </div>
-          <p id="ebookInfo">Z kodem "BLOG-WZ" zniżka na pełną wersję ebooka 🌿✨</p>
-        `;
-        document.getElementById('results').innerHTML += ebookOfferHTML;
-      }
-  
       // Po zakończeniu obliczeń wyślij nową wysokość do strony rodzica (iframe)
       setTimeout(sendHeightToParent, 300);
     }

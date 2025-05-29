@@ -488,8 +488,8 @@
       const pavingCost = pavedArea * pavingTypeCost;
       const terraceCost = terraceArea * terraceMaterialCost;
   
-      // Koszt kosiarki automatycznej (bazuje na powierzchni trawnika)
-      const mowerCost = includeMower ? (4000 + (lawnArea * 1)) : 0;
+      // Koszt kosiarki automatycznej (bazuje na powierzchni trawnika) - ZAKTUALIZOWANY WZÓR
+      const mowerCost = includeMower ? (6000 + (lawnArea * 2)) : 0;
   
       const totalExtraCost = poolCost + saunaCost + pergolaCost + kitchenCost + jacuzziCost + storageHouseCost + fireplaceZoneCost + playgroundCost + mowerCost;
       const totalCost = preparationCost + irrigationCost + lightingCost + lawnCost + bedsCost + flowerbedExecutionCost + pavingCost + terraceCost + totalExtraCost;
